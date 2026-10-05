@@ -90,8 +90,62 @@ async function createBuiltInPlaylist(name, initialTrack) {
   return result.playlist;
 }
 
-function promptCreateBuiltInPlaylist() {
-  var name = window.prompt('新建 Mineradio 内置歌单', '我的歌单');
+function builtInPlaylistPromptModal(title, defaultValue) {
+  return new Promise(function (resolve) {
+    var stale = document.getElementById('builtin-playlist-prompt-mask');
+    if (stale && stale.parentNode) stale.parentNode.removeChild(stale);
+    var mask = document.createElement('div');
+    mask.id = 'builtin-playlist-prompt-mask';
+    mask.className = 'modal-mask';
+    mask.innerHTML = [
+      '<div class="modal" style="max-width:340px">',
+      '<h2></h2>',
+      '<div class="collect-create">',
+      '<input type="text" maxlength="40" autocomplete="off">',
+      '<button type="button" class="modal-btn primary" data-act="ok">确定</button>',
+      '</div>',
+      '<div class="btn-row">',
+      '<button type="button" class="modal-btn" data-act="cancel">取消</button>',
+      '</div>',
+      '</div>'
+    ].join('');
+    var titleEl = mask.querySelector('h2');
+    if (titleEl) titleEl.textContent = String(title || '');
+    var input = mask.querySelector('input');
+    if (input) input.value = String(defaultValue == null ? '' : defaultValue);
+    var anchor = document.getElementById('collect-modal');
+    (anchor && anchor.parentNode ? anchor.parentNode : document.body).appendChild(mask);
+    var settled = false;
+    function done(value) {
+      if (settled) return;
+      settled = true;
+      if (typeof closeGsapModal === 'function') {
+        closeGsapModal(mask, function () { if (mask.parentNode) mask.parentNode.removeChild(mask); });
+      } else if (mask.parentNode) {
+        mask.parentNode.removeChild(mask);
+      }
+      resolve(value);
+    }
+    mask.addEventListener('click', function (event) {
+      if (event.target === mask) return done(null);
+      var act = event.target && event.target.getAttribute && event.target.getAttribute('data-act');
+      if (act === 'ok') done(String(input ? input.value : '').trim());
+      else if (act === 'cancel') done(null);
+    });
+    if (input) {
+      input.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') done(String(input.value).trim());
+        else if (event.key === 'Escape') done(null);
+      });
+      setTimeout(function () { input.focus(); input.select(); }, 80);
+    }
+    if (typeof openGsapModal === 'function') openGsapModal(mask);
+    else { mask.style.display = 'flex'; mask.style.visibility = 'visible'; mask.style.opacity = '1'; }
+  });
+}
+
+async function promptCreateBuiltInPlaylist() {
+  var name = await builtInPlaylistPromptModal('新建 Mineradio 内置歌单', '我的歌单');
   if (name == null) return;
   createBuiltInPlaylist(name).catch(function (error) {
     console.warn('[BuiltInPlaylistCreate]', error);
@@ -131,7 +185,7 @@ async function removeTrackFromBuiltInPlaylist(id, index) {
 }
 
 async function renameBuiltInPlaylist(id, currentName) {
-  var name = window.prompt('重命名内置歌单', String(currentName || ''));
+  var name = await builtInPlaylistPromptModal('重命名内置歌单', String(currentName || ''));
   if (name == null || !String(name).trim()) return false;
   var result = await window.desktopWindow.renameBuiltInPlaylist(String(id || ''), String(name).trim());
   if (!result || result.ok !== true) {
