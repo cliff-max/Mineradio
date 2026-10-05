@@ -1,56 +1,32 @@
 # Mineradio
 
-> **项目状态：长期停更**
+> **社区接续维护版** · fork 自 [XxHuberrr/Mineradio](https://github.com/XxHuberrr/Mineradio-paused)（上游已于 2026 年 9 月宣布长期停更，最终版本 v2.2.0）
 >
-> 目前因个人原因，Mineradio 项目处于长期停更状态。感兴趣的个人玩家可随意使用本项目进行创作，也可以自行修改和修复 bug。希望各位玩得开心，也希望世界和平，享受我们的音乐。
->
-> 本仓库保留公开源码、历史版本和下载说明，方便个人玩家 Fork、建立分支或制作二创版本。
+> 上游停更后，本仓库在其基础上继续修复 bug 并按个人需求 DIY。感谢原作者 XxHuberrr 的开源分享，也欢迎同样喜欢这个播放器的玩家自行取用。
 
 ![Mineradio 暗场启动页](./docs/assets/readme/cinema-beat-smoke.png)
 
 Mineradio 是一款 Windows 桌面沉浸式音乐播放器，把搜索播放、歌词舞台、粒子视觉、3D 歌单架和完整桌面模式组合成一个更接近现场感的私人音乐空间。
 
-## 立即下载 Windows 安装包
+## 本仓库相对上游的变更
 
-> 本次下载入口已更换，请使用下面的新网盘链接，并更新旧收藏。通过公告中的网盘入口下载，可以继续使用现有版本；项目目前处于长期停更状态。
+- 修复「内置歌单」新建 / 重命名在 Electron 下点击无反应的问题（上游 [issue #480](https://github.com/XxHuberrr/Mineradio-paused/issues/480)）：Electron 渲染进程不支持 `window.prompt()`，调用会静默失败；已替换为复用现有 modal 样式的应用内输入弹窗（零 CSS 改动）
+- 待办：FX 面板「复制 MR2 短代码」同样依赖 `window.prompt()`（`public/js/modules/07-fx/00-preset-archive-data.js`），尚未修复
 
-| 下载入口 | 推荐人群 | 链接 |
-| --- | --- | --- |
-| 夸克盘 | 夸克用户 | [下载 Mineradio 2.2.0](https://pan.quark.cn/s/4b124d3e81d3) |
-| 百度云 | 百度网盘用户（提取码 `SJHP`） | [下载 Mineradio 2.2.0](https://pan.baidu.com/s/17CwpHUza67w_Grgc3s5nOw?pwd=SJHP) |
-| GitHub Release | 版本说明与源码 | [查看 Mineradio 2.2.0](https://github.com/XxHuberrr/Mineradio/releases/tag/v2.2.0) |
+## 下载
 
-本页、发布公告和软件更新入口使用相同的两条新链接。旧分享地址不再作为本次版本的下载入口。
+- 本仓库 Releases：暂未发布构建，可按下方「开发运行」自行构建
+- 上游历史版本：[Mineradio v2.2.0 Release](https://github.com/XxHuberrr/Mineradio/releases/tag/v2.2.0)
 
-安装时只需要下载并运行 `Mineradio-2.2.0-Setup.exe`。不要把 `.blockmap`、`latest.yml` 或 `win-unpacked` 当成正式安装包。
-
-2.1.0 用户如果未看到更新提醒，请从托盘彻底退出后重新打开软件，切回普通窗口，等待约 30 秒后查看右上角更新箭头。旧版不会自动弹出公告；也可以直接使用上面的新网盘链接下载安装包。
+安装时只需要运行 `Mineradio-Setup.exe`。不要把 `.blockmap`、`latest.yml` 或 `win-unpacked` 当成正式安装包。
 
 ## 下载或安装被拦截怎么办
 
-小众 Electron 桌面软件、未签名安装包有时会被浏览器、Windows Defender 或 SmartScreen 提示风险。请先确认安装包来自本次公告的下载入口，文件名是 `Mineradio-2.2.0-Setup.exe`。
+小众 Electron 桌面软件、未签名安装包有时会被浏览器、Windows Defender 或 SmartScreen 提示风险。请先确认安装包来自本仓库或上游公告的下载入口。
 
-1. 浏览器下载栏提示风险时，打开下载列表，点这条下载右侧的 `...` 三个点，选择 `保留` / `仍要保留` / `显示更多` 后继续保留。
+1. 浏览器下载栏提示风险时，打开下载列表，点这条下载右侧的 `...` 三个点，选择 `保留` / `仍要保留` 后继续保留。
 2. Windows SmartScreen 弹出蓝色拦截窗口时，点 `更多信息`，再点 `仍要运行`。
-3. 如果杀毒软件明确显示木马、高危或已经隔离，不要强行运行；删除该文件后重新从上面的网盘入口下载，仍然异常请带截图反馈给作者。
-
-## 作者支持
-
-如果 Mineradio 陪你多听了一首歌，也欢迎请作者一杯咖啡。
-
-[查看完整支持页](./docs/SUPPORT.md)
-
-![Mineradio 作者支持渠道](./docs/assets/support/mineradio-author-support-poster.png)
-
-Mineradio 2.2 是历史稳定版本，修复了音乐接口的登录与播放问题，改善歌单加载和网络异常恢复，并加入更多手势操作与粒子预设。
-
-## 当前版本
-
-当前版本：`2.2.0`
-
-状态：Mineradio 2.2.0 历史正式版；项目目前长期停更。
-
-> 安全提示：`v1.0.10` 及更早旧安装包不再建议继续安装或传播。请使用本次公告提供的 `Mineradio-2.2.0-Setup.exe`。
+3. 如果杀毒软件明确显示木马、高危或已经隔离，不要强行运行；删除该文件后重新下载，仍然异常请带截图提 Issue。
 
 ## 核心特性
 
@@ -68,14 +44,6 @@ Mineradio 2.2 是历史稳定版本，修复了音乐接口的登录与播放问
 - GitHub Releases 更新检测与下载入口
 - 首次启动内置「默认测试」视觉用户存档，软件内默认视觉参数与该存档一致
 
-## 使用说明
-
-Windows 用户可以从本次发布公告列出的新网盘入口下载安装包。
-
-正式分发以 `Mineradio-2.2.0-Setup.exe` 为准，不建议直接使用 `win-unpacked` 目录。安装包会创建桌面快捷方式。
-
-已经安装过旧版本的用户可直接运行 `Mineradio-2.2.0-Setup.exe` 完成更新。软件内更新入口只会打开浏览器下载页，不会在客户端内下载或应用补丁。
-
 ## 开发运行
 
 ```bash
@@ -92,6 +60,8 @@ Mineradio 会请求 GitHub Releases latest 检测新版本。远端版本高于�
 
 本地验证更新链路时，可以通过 `MINERADIO_UPDATE_MANIFEST` 指向一个本地 manifest JSON 或 HTTP 地址来模拟线上 Release。
 
+> 注意：`package.json` 中的更新检测目标仍为上游仓库地址，本仓库自行发版时需要同步修改 `publish` 与 `mineradio.update` 配置。
+
 ## 第三方音乐平台说明
 
 Mineradio 不是网易云音乐、QQ 音乐或腾讯音乐娱乐集团的官方客户端，也不隶属于任何音乐平台。
@@ -104,6 +74,12 @@ Mineradio 不是网易云音乐、QQ 音乐或腾讯音乐娱乐集团的官方�
 
 更多说明见 [PRIVACY.md](./PRIVACY.md)。
 
+## 支持原作者
+
+如果 Mineradio 陪你多听了一首歌，欢迎请原作者一杯咖啡：[查看完整支持页](./docs/SUPPORT.md)
+
+![Mineradio 作者支持渠道](./docs/assets/support/mineradio-author-support-poster.png)
+
 ## 致谢
 
 Mineradio 由 XxHuberrr 主要设计与打造。emily 作为早期视觉底层想法与 `emily` 视觉预设改进方向的共创者和灵感来源之一，特此感谢。
@@ -114,6 +90,6 @@ Mineradio 由 XxHuberrr 主要设计与打造。emily 作为早期视觉底层�
 
 Copyright (C) 2026 XxHuberrr.
 
-本项目采用 GPL-3.0 授权。详见 [LICENSE](./LICENSE)。
+本项目采用 GPL-3.0 授权，详见 [LICENSE](./LICENSE)。本仓库是基于原项目的 GPL-3.0 衍生接续版本，遵循相同授权并向下游开放。
 
-MR Logo、Mineradio 名称、界面视觉设计与原创视觉表达归作者所有；第三方依赖和第三方服务分别遵循其各自授权与服务条款。
+MR Logo、Mineradio 名称、界面视觉设计与原创视觉表达归原作者所有；第三方依赖和第三方服务分别遵循其各自授权与服务条款。
